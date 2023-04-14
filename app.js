@@ -1,6 +1,8 @@
-const { hello_world } = require('./routes/index.js');
-
 const express = require('express');
+
+const { get_posts } = require('./routes/get_posts.js');
+const { get_post } = require('./routes/get_post.js');
+
 const app = express();
 const port = 3000 // tells us what port on your computer to listen to
 
@@ -10,15 +12,17 @@ app.use(express.json()) // automatically turn req to json
     GET Requests
 */
 app.get('/', (req, res) => {
-    res.send('GET home')
+    res.send('GET index')
 })
 
-app.get('/posts/', (req, res) => {
-    res.send('GET posts')
+app.get('/posts/', async (req, res) => {
+    const posts = await get_posts() // wait for posts to be retrieved from firebase
+    res.send(posts)
 })
 
-app.get('/posts/:postId/', (req, res) => {
-    res.send(`GET post with post id: ${req.params.postId}`)
+app.get('/posts/:postId/', async (req, res) => {
+    const posts = await get_post(req.params.postId) // grab postId from URL
+    res.send(posts)
 })
 
 /* 
