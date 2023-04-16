@@ -2,6 +2,8 @@ const express = require('express');
 
 const { get_posts } = require('./routes/get_posts.js');
 const { get_post } = require('./routes/get_post.js');
+const { write_post } = require('./routes/write_post.js');
+const { delete_post } = require('./routes/delete_post.js');
 
 const app = express();
 const port = 3000 // tells us what port on your computer to listen to
@@ -29,21 +31,15 @@ app.get('/posts/:postId/', async (req, res) => {
     POST Request(s)
 */
 app.post('/posts/write-post/', (req, res) => {
+    write_post(req.body)
     res.send(`POST write-post with content: ${JSON.stringify(req.body)}`)
-})
-
-/* 
-    PUT Request(s)
-*/
-// Note: this does the same thing as the POST request above
-app.put('/posts/write-post/', (req, res) => {
-    res.send(`PUT write-post with content: ${JSON.stringify(req.body)}`)
 })
 
 /* 
     DELETE Request(s)
 */
 app.delete('/posts/:postId/', (req, res) => {
+    delete_post(req.params.postId)
     res.send(`DELETE post with post id: ${req.params.postId}`)
 })
 
